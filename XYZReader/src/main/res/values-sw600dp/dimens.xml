@@ -1,7 +1,30 @@
 <resources>
     <!-- detail -->
-    <dimen name="detail_title_text_size">42sp</dimen>
-    <dimen name="detail_body_text_size">20sp</dimen>
-    <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.3</item>
+    <dimen name="detail_title_text_size">32sp</dimen>
+    <dimen name="detail_body_text_size">22sp</dimen>
+    <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
+    <dimen name="recycler_view_left_margin">8dp</dimen>
+    <dimen name="recycler_view_right_margin">8dp</dimen>
+    <dimen name="fab_elevation">2dp</dimen>
+    <dimen name="fab_press_translation_z">6dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
+
+    <!--     fragment_article_detail_content    -->
+    <dimen name="detail_content_constraint_layout_padding_bottom">24dp</dimen>
+    <dimen name="detail_content_article_details_padding">16dp</dimen>
+    <dimen name="detail_content_article_byLine_textSize">16sp</dimen>
+    <dimen name="detail_content_article_body_margin_end">8dp</dimen>
+    <dimen name="detail_content_article_body_marginStart">24dp</dimen>
+    <dimen name="detail_content_article_body_marginTop">8dp</dimen>
+    <dimen name="detail_content_article_body_padding">8dp</dimen>
+    <dimen name="detail_content_article_body_textSize">19sp</dimen>
+    <dimen name="detail_content_expand_text_marginBottom">16dp</dimen>
+    <dimen name="detail_content_expand_text_marginEnd">16dp</dimen>
+    <dimen name="detail_content_expand_text_marginStart">16dp</dimen>
+    <dimen name="detail_content_expand_text_marginTop">24dp</dimen>
+    <dimen name="list_item_article_title_text_size">19sp</dimen>
+    <dimen name="list_item_article_subtitle_textSize">16sp</dimen>
+    <dimen name="detail_content_article_detail_margin">16dp</dimen>
+
+
 </resources>

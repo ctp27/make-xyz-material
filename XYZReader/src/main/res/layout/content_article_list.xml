@@ -12,9 +12,8 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/list_side_margin"
-        android:paddingRight="@dimen/list_side_margin"
-        android:paddingBottom="28dp"
+        android:paddingLeft="@dimen/recycler_view_left_margin"
+        android:paddingRight="@dimen/recycler_view_right_margin"
         />
 
 

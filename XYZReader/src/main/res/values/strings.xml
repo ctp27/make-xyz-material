@@ -8,5 +8,6 @@
     <string name="action_share">Share</string>
 
     <string name="up">Up</string>
+    <string name="view_full_article_btn_text">View Full Article</string>
 
 </resources>

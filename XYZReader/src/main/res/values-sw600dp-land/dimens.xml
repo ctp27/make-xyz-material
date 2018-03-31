@@ -12,18 +12,17 @@
     <!--     fragment_article_detail_content    -->
     <dimen name="detail_content_constraint_layout_padding_bottom">64dp</dimen>
     <dimen name="detail_content_article_details_padding">16dp</dimen>
-    <dimen name="detail_content_article_byLine_textSize">14sp</dimen>
+    <dimen name="detail_content_article_byLine_textSize">16sp</dimen>
     <dimen name="detail_content_article_body_margin_end">8dp</dimen>
-    <dimen name="detail_content_article_body_marginStart">8dp</dimen>
+    <dimen name="detail_content_article_body_marginStart">24dp</dimen>
     <dimen name="detail_content_article_body_marginTop">8dp</dimen>
     <dimen name="detail_content_article_body_padding">8dp</dimen>
-    <dimen name="detail_content_article_body_textSize">16sp</dimen>
+    <dimen name="detail_content_article_body_textSize">20sp</dimen>
     <dimen name="detail_content_expand_text_marginBottom">16dp</dimen>
     <dimen name="detail_content_expand_text_marginEnd">16dp</dimen>
     <dimen name="detail_content_expand_text_marginStart">16dp</dimen>
     <dimen name="detail_content_expand_text_marginTop">24dp</dimen>
-    <dimen name="list_item_article_title_text_size">17sp</dimen>
-    <dimen name="list_item_article_subtitle_textSize">14sp</dimen>
-    <dimen name="detail_content_article_detail_margin">16dp</dimen>
-
+    <dimen name="list_item_article_title_text_size">20sp</dimen>
+    <dimen name="list_item_article_subtitle_textSize">17sp</dimen>
+    <dimen name="detail_content_article_detail_margin">24dp</dimen>
 </resources>

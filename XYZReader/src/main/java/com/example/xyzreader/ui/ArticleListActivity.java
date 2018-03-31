@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -12,24 +13,30 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import butterknife.BindBool;
+import butterknife.BindColor;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -42,9 +49,15 @@ public class ArticleListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ArticleListActivity.class.toString();
+    private static final String BUNDLE_SAVED_POSITION = "bundle-saved-position";
+    private int savedClickedPosition=-1;
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private Adapter adapter;
+
+    @BindBool(R.bool.tabletPort)
+    boolean isTablet;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -58,6 +71,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
+        ButterKnife.bind(this);
 
 //        ((CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout)).setTitle(getString(R.string.app_name));
 
@@ -69,11 +83,17 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        getSupportLoaderManager().initLoader(0, null, this);
+        adapter = new Adapter(null);
+        adapter.setHasStableIds(true);
 
-        if (savedInstanceState == null) {
-            refresh();
-        }
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+
+        mRecyclerView.setAdapter(adapter);
+
+
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -81,6 +101,27 @@ public class ArticleListActivity extends AppCompatActivity implements
                 refresh();
             }
         });
+
+
+        if(isTablet && savedInstanceState ==null){
+
+            DefaultTabFragment fragmentNew = new DefaultTabFragment();
+
+            getSupportFragmentManager().beginTransaction().
+                    add(R.id.article_detail_pane,fragmentNew)
+                    .commit();
+        }else {
+            if(isTablet){
+                Log.d(TAG,"set saved clicked position");
+                savedClickedPosition = savedInstanceState.getInt(BUNDLE_SAVED_POSITION);
+            }
+        }
+
+        getSupportLoaderManager().initLoader(0, null, this);
+
+        if (savedInstanceState == null) {
+            refresh();
+        }
     }
 
 
@@ -125,47 +166,44 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        Adapter adapter = new Adapter(cursor);
-        adapter.setHasStableIds(true);
-        mRecyclerView.setAdapter(adapter);
-        int columnCount = getResources().getInteger(R.integer.list_column_count);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        StaggeredGridLayoutManager sglm =
-                new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(layoutManager);
+        adapter.setClickedPosition(savedClickedPosition);
+        adapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mRecyclerView.setAdapter(null);
+        adapter.swapCursor(null);
     }
 
-    private class Adapter extends RecyclerView.Adapter<ViewHolder> {
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(isTablet){
+            outState.putInt(BUNDLE_SAVED_POSITION,adapter.getClickedPosition());
+        }
+    }
+
+    public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         private Cursor mCursor;
 
+        private View lastView;
+        private int clickedPosition;
+
         public Adapter(Cursor cursor) {
+            clickedPosition = savedClickedPosition;
             mCursor = cursor;
         }
 
-        @Override
-        public long getItemId(int position) {
-            mCursor.moveToPosition(position);
-            return mCursor.getLong(ArticleLoader.Query._ID);
-        }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = getLayoutInflater().inflate(R.layout.list_item_article, parent, false);
             final ViewHolder vh = new ViewHolder(view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
-                }
-            });
+
             return vh;
         }
+
 
         private Date parsePublishedDate() {
             try {
@@ -180,6 +218,17 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
+
+            if(isTablet && position ==clickedPosition){
+            /*  If last view is null, this is the first time the view is being set */
+                if(lastView==null) {
+                    View v = holder.itemView;
+                    v.setBackgroundColor(holder.highlightColor);
+                    lastView = v;
+                }
+            }
+
+
             mCursor.moveToPosition(position);
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
@@ -198,29 +247,98 @@ public class ArticleListActivity extends AppCompatActivity implements
                         + "<br/>" + " by "
                         + mCursor.getString(ArticleLoader.Query.AUTHOR)));
             }
-            holder.thumbnailView.setImageUrl(
-                    mCursor.getString(ArticleLoader.Query.THUMB_URL),
-                    ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
-            holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+
+            Picasso.get().load(mCursor.getString(ArticleLoader.Query.THUMB_URL))
+                    .placeholder(R.drawable.empty_detail)
+                    .error(R.drawable.empty_detail)
+                    .into(holder.thumbnailView);
         }
 
         @Override
         public int getItemCount() {
+            if(mCursor==null)
+                return 0;
             return mCursor.getCount();
         }
-    }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public void swapCursor(Cursor newCursor){
+            if(mCursor!=null){
+                mCursor=null;
+            }
+            mCursor = newCursor;
+            notifyDataSetChanged();
+        }
 
-        public DynamicHeightNetworkImageView thumbnailView;
-        public TextView titleView;
-        public TextView subtitleView;
+        public int getClickedPosition() {
+            return clickedPosition;
+        }
 
-        public ViewHolder(View view) {
-            super(view);
-            thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
-            titleView = (TextView) view.findViewById(R.id.article_title);
-            subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
+        public void setClickedPosition(int clickedPosition) {
+            this.clickedPosition = clickedPosition;
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder
+                implements View.OnClickListener{
+
+            @BindView(R.id.thumbnail)
+            ImageView thumbnailView;
+
+            @BindView(R.id.article_title)
+            TextView titleView;
+
+            @BindView(R.id.article_subtitle)
+            TextView subtitleView;
+
+            @BindColor(R.color.defaultBg)
+            int defaultColor;
+
+            @BindColor(R.color.colorAccentHighlight)
+            int highlightColor;
+
+            public ViewHolder(View view) {
+                super(view);
+                ButterKnife.bind(this,view);
+                view.setOnClickListener(this);
+
+            }
+
+            @Override
+            public void onClick(View view) {
+                int thisPosition = getAdapterPosition();
+               mCursor.moveToPosition(thisPosition);
+
+                if(isTablet){
+                    clickedPosition = thisPosition;
+                    if(lastView!=null) {
+                        lastView.setBackgroundColor(defaultColor);
+                    }
+                    view.setBackgroundColor(highlightColor);
+                    lastView = view;
+
+                    ArticleDetailFragmentNew fragmentNew = new ArticleDetailFragmentNew();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(ArticleDetailFragmentNew.BUNDLE_ARTICLE_ID,Integer.parseInt(mCursor.getString(ArticleLoader.Query._ID)));
+                    bundle.putString("author",mCursor.getString(ArticleLoader.Query.AUTHOR));
+                    bundle.putString("date",mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE));
+                    bundle.putString("title",mCursor.getString(ArticleLoader.Query.TITLE));
+                    bundle.putString("body",mCursor.getString(ArticleLoader.Query.BODY).substring(0,3000));
+                    bundle.putString("image",mCursor.getString(ArticleLoader.Query.PHOTO_URL));
+                    fragmentNew.setArguments(bundle);
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.article_detail_pane,fragmentNew)
+                            .commit();
+                }
+                else {
+                    Uri uri = ItemsContract.Items.buildItemUri(thisPosition);
+                    int count = mCursor.getCount();
+                    Intent intent = new Intent(ArticleListActivity.this, ArticleDetailActivity.class);
+                    intent.setData(uri);
+                    intent.putExtra(ArticleDetailActivity.CURSOR_COUNT_EXTRA, count);
+                    startActivity(intent);
+                }
+            }
         }
     }
+
+
 }

@@ -26,7 +26,10 @@
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">#CDDC39</color>
+    <color name="colorAccentHighlight">#E6EE9C</color>
     <color name="colorSeperater">#EEEEEE</color>
     <color name="colorPrimaryLight">#B2DFDB</color>
+    <color name="textColorDark">#616161</color>
     <color name="textColor">@android:color/white</color>
+    <color name="defaultBg">#FAFAFA</color>
 </resources>

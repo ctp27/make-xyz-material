@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/detail_content_constraint_layout_padding_bottom">
+
+        <LinearLayout
+            android:id="@+id/article_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical"
+            android:padding="@dimen/detail_content_article_details_padding"
+
+            >
+
+            <TextView
+                android:id="@+id/article_byLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/detail_content_article_byLine_textSize"
+                tools:text="Feb 12, 2004 by Cory Doctorow"
+                android:textColor="@color/textColor"
+                android:layout_marginStart="16dp"
+                />
+
+
+        </LinearLayout>
+
+    <at.blogc.android.views.ExpandableTextView
+        android:id="@+id/article_body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/detail_content_article_body_margin_end"
+        android:layout_marginStart="@dimen/detail_content_article_body_marginStart"
+        android:layout_marginTop="@dimen/detail_content_article_body_marginTop"
+        android:ellipsize="end"
+        android:padding="8dp"
+        android:textColor="@color/textColorDark"
+        android:textSize="16sp"
+        app:animation_duration="750"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/article_details"
+        tools:text="Hello there this is an awesome article!" />
+
+
+    <Button
+        android:id="@+id/expand_text"
+        android:layout_width="172dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorAccent"
+        android:text="@string/view_full_article_btn_text"
+        android:textColor="@color/textColor"
+        app:layout_constraintStart_toStartOf="@+id/article_body"
+        app:layout_constraintTop_toBottomOf="@+id/article_body" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/expand_text"
+        app:layout_constraintEnd_toEndOf="@+id/expand_text"
+        app:layout_constraintStart_toStartOf="@+id/expand_text"
+        app:layout_constraintTop_toTopOf="@+id/expand_text" />
+
+    </android.support.constraint.ConstraintLayout>
