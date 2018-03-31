@@ -44,7 +44,7 @@
         android:ellipsize="end"
         android:padding="8dp"
         android:textColor="@color/textColorDark"
-        android:textSize="16sp"
+        android:textSize="@dimen/detail_content_article_body_textSize"
         app:animation_duration="750"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -7,7 +7,7 @@
     <dimen name="recycler_view_right_margin">8dp</dimen>
     <dimen name="fab_elevation">2dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
-    <dimen name="fab_margin">24dp</dimen>
+    <dimen name="fab_margin">32dp</dimen>
 
     <!--     fragment_article_detail_content    -->
     <dimen name="detail_content_constraint_layout_padding_bottom">24dp</dimen>
