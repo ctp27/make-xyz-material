@@ -147,9 +147,9 @@ public class ArticleDetailActivity extends AppCompatActivity
 
             adapterCursor.moveToPosition(position);
 
-            ArticleDetailFragmentNew fragmentNew = new ArticleDetailFragmentNew();
+            ArticleDetailFragment fragmentNew = new ArticleDetailFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt(ArticleDetailFragmentNew.BUNDLE_ARTICLE_ID,Integer.parseInt(adapterCursor.getString(ArticleLoader.Query._ID)));
+            bundle.putInt(ArticleDetailFragment.BUNDLE_ARTICLE_ID,Integer.parseInt(adapterCursor.getString(ArticleLoader.Query._ID)));
             bundle.putString("author",adapterCursor.getString(ArticleLoader.Query.AUTHOR));
             bundle.putString("date",adapterCursor.getString(ArticleLoader.Query.PUBLISHED_DATE));
             bundle.putString("title",adapterCursor.getString(ArticleLoader.Query.TITLE));

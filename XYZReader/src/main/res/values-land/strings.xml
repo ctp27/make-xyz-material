@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_cursor_view_text">No internet connection. Please check your connection and refresh</string>
+</resources>

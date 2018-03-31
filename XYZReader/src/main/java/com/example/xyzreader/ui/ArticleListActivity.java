@@ -59,6 +59,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     @BindBool(R.bool.tabletPort)
     boolean isTablet;
 
+    @BindView(R.id.empty_cursor_view)
+    TextView emptyCursorView;
+
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
@@ -165,6 +168,12 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        hideEmptyCursorMessage();
+
+        if(cursor==null || cursor.getCount()==0){
+            showEmptyCursorMessage();
+        }
+
         adapter.setClickedPosition(savedClickedPosition);
         adapter.swapCursor(cursor);
     }
@@ -181,6 +190,16 @@ public class ArticleListActivity extends AppCompatActivity implements
         if(isTablet){
             outState.putInt(BUNDLE_SAVED_POSITION,adapter.getClickedPosition());
         }
+    }
+
+    private void hideEmptyCursorMessage(){
+        emptyCursorView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void showEmptyCursorMessage(){
+        emptyCursorView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
     }
 
     public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
@@ -314,9 +333,9 @@ public class ArticleListActivity extends AppCompatActivity implements
                     view.setBackgroundColor(highlightColor);
                     lastView = view;
 
-                    ArticleDetailFragmentNew fragmentNew = new ArticleDetailFragmentNew();
+                    ArticleDetailFragment fragmentNew = new ArticleDetailFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putInt(ArticleDetailFragmentNew.BUNDLE_ARTICLE_ID,Integer.parseInt(mCursor.getString(ArticleLoader.Query._ID)));
+                    bundle.putInt(ArticleDetailFragment.BUNDLE_ARTICLE_ID,Integer.parseInt(mCursor.getString(ArticleLoader.Query._ID)));
                     bundle.putString("author",mCursor.getString(ArticleLoader.Query.AUTHOR));
                     bundle.putString("date",mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE));
                     bundle.putString("title",mCursor.getString(ArticleLoader.Query.TITLE));

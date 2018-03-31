@@ -9,5 +9,6 @@
 
     <string name="up">Up</string>
     <string name="view_full_article_btn_text">View Full Article</string>
+    <string name="empty_cursor_view_text">No internet connection. Please check your connection and refresh</string>
 
 </resources>

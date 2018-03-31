@@ -43,7 +43,7 @@ import butterknife.ButterKnife;
  * Created by clinton on 3/25/18.
  */
 
-public class ArticleDetailFragmentNew extends Fragment
+public class ArticleDetailFragment extends Fragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int EXPAND_TEXT_LOADER_ID = 22;
@@ -108,7 +108,7 @@ public class ArticleDetailFragmentNew extends Fragment
     private int scrollX=0;
     private int scrollY=0;
 
-    public ArticleDetailFragmentNew() {
+    public ArticleDetailFragment() {
     }
 
 
@@ -145,7 +145,7 @@ public class ArticleDetailFragmentNew extends Fragment
             @Override
             public void onClick(View view) {
                 showProgressBar();
-                getLoaderManager().restartLoader(EXPAND_TEXT_LOADER_ID,null,ArticleDetailFragmentNew.this);
+                getLoaderManager().restartLoader(EXPAND_TEXT_LOADER_ID,null,ArticleDetailFragment.this);
             }
         });
 

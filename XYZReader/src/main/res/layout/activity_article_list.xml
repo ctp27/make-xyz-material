@@ -36,4 +36,15 @@
 
     <include layout = "@layout/content_article_list"/>
 
+    <TextView
+        android:id="@+id/empty_cursor_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/empty_cursor_view_textSize"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:layout_margin="16dp"
+        android:text="@string/empty_cursor_view_text"/>
+
 </android.support.design.widget.CoordinatorLayout>
