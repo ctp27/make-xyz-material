@@ -17,7 +17,7 @@
     <dimen name="detail_content_article_body_marginStart">24dp</dimen>
     <dimen name="detail_content_article_body_marginTop">8dp</dimen>
     <dimen name="detail_content_article_body_padding">8dp</dimen>
-    <dimen name="detail_content_article_body_textSize">19sp</dimen>
+    <dimen name="detail_content_article_body_textSize">18sp</dimen>
     <dimen name="detail_content_expand_text_marginBottom">16dp</dimen>
     <dimen name="detail_content_expand_text_marginEnd">16dp</dimen>
     <dimen name="detail_content_expand_text_marginStart">16dp</dimen>
