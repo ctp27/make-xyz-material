@@ -21,7 +21,8 @@
             android:layout_marginRight="@dimen/list_toolbar_side_margin"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
