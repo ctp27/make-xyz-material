@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -59,6 +60,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     @BindBool(R.bool.tabletPort)
     boolean isTablet;
 
+    @BindBool(R.bool.landscape)
+    boolean isLandscape;
+
     @BindView(R.id.empty_cursor_view)
     TextView emptyCursorView;
 
@@ -88,9 +92,13 @@ public class ArticleListActivity extends AppCompatActivity implements
         adapter = new Adapter(null);
         adapter.setHasStableIds(true);
 
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        mRecyclerView.setLayoutManager(layoutManager);
+        if(isLandscape){
+            GridLayoutManager manager = new GridLayoutManager(this,2);
+            mRecyclerView.setLayoutManager(manager);
+        }else {
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            mRecyclerView.setLayoutManager(layoutManager);
+        }
 
 
         mRecyclerView.setAdapter(adapter);

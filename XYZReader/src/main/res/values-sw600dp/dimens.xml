@@ -27,6 +27,7 @@
     <dimen name="detail_content_article_detail_margin">16dp</dimen>
     <dimen name="app_bar_elevation">6dp</dimen>
     <dimen name="empty_cursor_view_textSize">24sp</dimen>
+    <dimen name="list_item_card_view_height">240dp</dimen>
 
 
 </resources>
